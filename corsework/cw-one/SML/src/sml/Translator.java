@@ -82,22 +82,47 @@ public class Translator {
             return null;
 
         String ins = scan();
-        switch (ins) {
-            case "add":
-                r = scanInt();
-                s1 = scanInt();
-                s2 = scanInt();
-                return new AddInstruction(label, r, s1, s2);
-            case "lin":
-                r = scanInt();
-                s1 = scanInt();
-                return new LinInstruction(label, r, s1);
+        /*
+           To comply with kiss we will create a convention: The name of the instruction + the word instruction will identify the class to create
+           For example "add" creates AddInstruction (CamelCase), "lin" creates LinInstruction
+
+           all input parameters are int and we will read all the available input parameters. This will have to match the number of parameters for the class we are creating
+
+
+
+         */
+
+        String instruction = "sml."+ins.substring(0,1).toUpperCase() + ins.substring(1) + "Instruction";
+        try {
+
+            Class insClass = Class.forName(instruction);
+            ArrayList<Integer> parameters = new ArrayList();
+            while(true){
+                int nextParam = scanInt();
+                if (nextParam == Integer.MAX_VALUE) break;
+                parameters.add(nextParam);
+            }
+
+            Object[] params = new Object[parameters.size()+1];
+            Class<?>[] consParams = new Class<?>[parameters.size()+1];
+            params[0] = label;
+            consParams[0] = String.class;
+
+            for(int i = 1; i<parameters.size()+1;i++){
+                params[i] = parameters.get(i-1);
+                consParams[i] = int.class;
+            }
+
+            Instruction returnObject = (Instruction) insClass.getConstructor(consParams).newInstance(params);
+
+            return returnObject;
+
+        } catch (Exception ex) {
+            //Exceptions are treated as unreadable instruction hence ignored
+            return null;
         }
 
-        // You will have to write code here for the other instructions.
-
-        return null;
-    }
+     }
 
     /*
      * Return the first word of line and remove it from line. If there is no
