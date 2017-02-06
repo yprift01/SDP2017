@@ -1,5 +1,5 @@
 package sml
-
+import scala.reflect.runtime.{universe => ru}
 /*
  * The translator of a <b>S</b><b>M</b>al<b>L</b> program.
  */
@@ -23,6 +23,15 @@ class Translator(fileName: String) {
       val fields = line.split(" ")
       if (fields.length > 0) {
         labels.add(fields(0))
+        val clsName:String = "sml." + fields(1).capitalize + "Instruction"
+        val mirror = ru.runtimeMirror(getClass.getClassLoader)
+        val cls = mirror.classSymbol(Class.forName(clsName))
+        val module = cls.companion.asModule
+        val instance = mirror.reflectModule(module).instance
+        program:+ instance
+
+        /*
+
         fields(1) match {
           case ADD =>
             program = program :+ AddInstruction(fields(0), fields(2).toInt, fields(3).toInt, fields(4).toInt)
@@ -31,6 +40,7 @@ class Translator(fileName: String) {
           case x =>
             println(s"Unknown instruction $x")
         }
+        */
       }
     }
     new Machine(labels, program)
