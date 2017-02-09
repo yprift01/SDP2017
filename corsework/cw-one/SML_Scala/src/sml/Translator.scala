@@ -1,5 +1,6 @@
 package sml
 import scala.reflect.runtime.{universe => ru}
+import scala.util.Try
 /*
  * The translator of a <b>S</b><b>M</b>al<b>L</b> program.
  */
@@ -27,7 +28,10 @@ class Translator(fileName: String) {
         val mirror = ru.runtimeMirror(getClass.getClassLoader)
         val cls = mirror.classSymbol(Class.forName(clsName))
         val module = cls.companion.asModule
-        val instance = mirror.reflectModule(module).instance
+        val ctor = Class.forName(clsName).getConstructors()(0);
+        //val instance = mirror.reflectModule(module).instance
+        val params = fields.map(x=>Try(x.toInt).getOrElse(x))
+        val instance = ctor.newInstance(params).asInstanceOf[Instruction]
         program:+ instance
 
         /*
