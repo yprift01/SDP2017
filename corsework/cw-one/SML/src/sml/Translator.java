@@ -11,7 +11,7 @@ import java.util.Scanner;
  */
 public class Translator {
 
-    private static final String PATH = "/home/yprift01/Dev/SDP-2017/coursework/cw-one/";
+    private static final String PATH = "/home/yprift01/Dev/SDP2017/corsework/cw-one/";
     // word + line is the part of the current line that's not yet processed
     // word has no whitespace
     // If word and line are not empty, line begins with whitespace
@@ -92,25 +92,43 @@ public class Translator {
 
          */
 
-        String instruction = "sml."+ins.substring(0,1).toUpperCase() + ins.substring(1) + "Instruction";
+        String shortSub = ins.substring(0,1).toUpperCase() + ins.substring(1);
+
+        String instruction = "sml."+ shortSub + "Instruction";
         try {
 
             Class insClass = Class.forName(instruction);
             ArrayList<Integer> parameters = new ArrayList();
+            ArrayList<String> sparams = new ArrayList();
             while(true){
-                int nextParam = scanInt();
-                if (nextParam == Integer.MAX_VALUE) break;
-                parameters.add(nextParam);
+                if(!shortSub.equals("Bnz")) {
+                    int nextParam = scanInt();
+                    if (nextParam == Integer.MAX_VALUE) break;
+                    parameters.add(nextParam);
+                } else {
+                    int nextParam = scanInt();
+                    String jumpTo = scan();
+                    parameters.add(nextParam);
+                    sparams.add(jumpTo);
+                    break;
+                }
+
             }
 
-            Object[] params = new Object[parameters.size()+1];
-            Class<?>[] consParams = new Class<?>[parameters.size()+1];
+            Object[] params = new Object[parameters.size()+1 + sparams.size()];
+            Class<?>[] consParams = new Class<?>[parameters.size()+1 + sparams.size()];
             params[0] = label;
             consParams[0] = String.class;
 
             for(int i = 1; i<parameters.size()+1;i++){
                 params[i] = parameters.get(i-1);
                 consParams[i] = int.class;
+            }
+            if(sparams.size() > 0) {
+                for(int i = parameters.size() + 1; i<parameters.size() + 1 + sparams.size();i++){
+                    params[i] = sparams.get(i-1 - parameters.size());
+                    consParams[i] = String.class;
+                }
             }
 
             Instruction returnObject = (Instruction) insClass.getConstructor(consParams).newInstance(params);
