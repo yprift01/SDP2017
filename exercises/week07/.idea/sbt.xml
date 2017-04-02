@@ -3,15 +3,14 @@
   <component name="ScalaSbtSettings">
     <option name="linkedExternalProjectsSettings">
       <SbtProjectSettings>
-        <option name="createEmptyContentRootDirectories" value="true" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="jdk" value="1.8" />
         <option name="modules">
           <set>
-            <option value="$USER_HOME$/Library/Mobile Documents/com~apple~CloudDocs/Courses/sdp/SDP-2017/exercises/week06" />
-            <option value="$USER_HOME$/Library/Mobile Documents/com~apple~CloudDocs/Courses/sdp/SDP-2017/exercises/week06/project" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/project" />
           </set>
         </option>
-        <option name="resolveSbtClassifiers" value="true" />
         <option name="sbtVersion" value="0.13.13" />
         <option name="useAutoImport" value="true" />
         <option name="useOurOwnAutoImport" value="true" />

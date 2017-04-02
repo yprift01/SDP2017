@@ -36,7 +36,7 @@ public class SingletonProtected implements Serializable {
 
 
     @Override
-    public Object clone() throws CloneNotSupportedException {
+        public Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException("Singleton, cannot be cloned");
     }
 
