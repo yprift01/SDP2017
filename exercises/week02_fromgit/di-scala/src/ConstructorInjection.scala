@@ -1,1 +1,0 @@
-class ConstructorInjection(dep: Dependency)
