@@ -1,0 +1,1 @@
+class MotionSensor extends Sensor

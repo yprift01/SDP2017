@@ -1,12 +1,12 @@
+import Strategy.StrategyClient
+
 import scala.collection.mutable.ListBuffer
 
-class ControlUnit {
+class ControlUnit(sensors: ListBuffer[Sensor], strategyRunners: ListBuffer[StrategyClient] ) {
   def pollSensors() {
-    val sensors = new ListBuffer[Sensor]()
-    sensors += new FireSensor()
-    sensors += new SmokeSensor()
     for (sensor <- sensors) {
       if (sensor.isTriggered) {
+        strategyRunners.foreach(x=>x.triggerAction)
         System.out.println("A " + sensor.getSensorType + " sensor was triggered at " + sensor.getLocation)
       }
       else {

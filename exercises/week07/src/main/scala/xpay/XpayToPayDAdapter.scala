@@ -5,6 +5,7 @@ package xpay
   */
 class XpayToPayDAdapter(val payD: PayD) extends Xpay{
 
+  var cardYear: String = null
 
   override def getCreditCardNo: String = payD.getCustCardNo
 
@@ -18,9 +19,11 @@ class XpayToPayDAdapter(val payD: PayD) extends Xpay{
 
   override def setCardExpMonth(cardExpMonth: String): Unit = payD.setCardExpMonthDate(cardExpMonth)
 
-  override def getCardExpYear: String = "3000"
+  override def getCardExpYear: String = cardYear
 
-  override def setCardExpYear(cardExpYear: String): Unit = 1
+  override def setCardExpYear(cardExpYear: String) = {
+    cardYear = cardExpYear
+  }
 
   override def getCardCVVNo: Short = payD.getCVVNo.asInstanceOf[Short]
 
