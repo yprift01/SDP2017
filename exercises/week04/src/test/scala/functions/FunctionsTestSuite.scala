@@ -42,6 +42,8 @@ class FunctionsTestSuite extends FunSuite {
     assert(reverse("Hello".toList) == "olleH".toList)
   }
 
+
+
   test("flatten flattens the nested list") {
     assert(flatten(List(List(1, 2, 3), List(4, 5, 6))) == List(1, 2, 3, 4, 5, 6))
   }
