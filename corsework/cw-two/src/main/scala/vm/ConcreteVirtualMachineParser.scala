@@ -1,25 +1,23 @@
-package vendor
+package vm
+
+import vendor.Instruction
+import bc.{ByteCode, ByteCodeFactory, ByteCodeValues, InvalidBytecodeException}
 
 import scala.collection.mutable.Queue
 import scala.io.BufferedSource
 
 /**
-  * Created by yprift01 on 16/04/17.
+  * Created by yprift01 on 17/04/17.
   */
-class VendorProgramParser extends ProgramParser {
+class ConcreteVirtualMachineParser(val bc: ByteCodeFactory)
+  extends VirtualMachineParser
+   with ByteCodeValues
+ {
 
+   //private val codebyte = bytecode map {_.swap}
 
-  override type InstructionList = Vector[Instruction]
-
-  /**
-    * Parses a file representation of a bytecode program
-    * into an `InstructionList`.
-    *
-    * @param file the file to parse
-    * @return an instruction list
-    */
-  override def parse(file: String): InstructionList = {
-    var stringToParse:String  = null       //string to store the content of the file
+  override def parse(file: String): Vector[ByteCode] = {
+    var stringToParse:String  = ""       //string to store the content of the file
 
     //This is a dependency that shouldn't be here. Need to be injected as a service.
     var src:BufferedSource  = null         //Open the file as buffered source, make sure to close when one
@@ -29,29 +27,22 @@ class VendorProgramParser extends ProgramParser {
       stringToParse = src.mkString         //Try to read content into string
     }catch {                               //In case of failure to read content return empty instruction list and ignore error
 
-      case ex:Exception => return  Vector.empty[Instruction]             //
+      case ex:Exception => return  Vector.empty[ByteCode]             //
 
     } finally {                            //Make sure to close file if it is open
       if(src!=null) src.close
     }
 
     if(stringToParse == null || stringToParse.length() == 0) //If string with content from file is empty return empty instruction list
-      return Vector.empty[Instruction]
+      return Vector.empty[ByteCode]
 
     parseString(stringToParse)
 
   }
 
 
-  /**
-    * Parses a string representation of a bytecode program
-    * into an `InstructionList`.
-    *
-    * @param stringToParse the string to parse
-    * @return an instruction list
-    */
-  def parseString(stringToParse: String): InstructionList = {
-    val tempList = new Queue[Instruction]          //emtpy result
+  def parseString(stringToParse: String): Vector[ByteCode] = {
+    val tempList = new Queue[ByteCode]          //emtpy result
     val allLines = stringToParse.split("\\r?\\n")  // Split content into an array of strings. One item for each line. Splity by new line char both for windows or linux file types
 
     if (allLines == null || allLines.length ==0)   //return empty result if nothing to parse
@@ -60,39 +51,37 @@ class VendorProgramParser extends ProgramParser {
     allLines.foreach(x=>{       //Foreach of the lines in the string
 
       //Create an instruction based on the instruction name and the parameters and add it to the queue
-      tempList+= new Instruction(getInstruction(x), getParameters(x))
+      val instr = getInstruction(x)
+      val params = getParameters(x)
+      try {
+        if (params.length > 0)
+          tempList += bc.make(bytecode(instr), params(0))
+        else tempList += bc.make(bytecode(instr))
+      }catch {
+        case ex: NoSuchElementException => throw new InvalidBytecodeException(instr.toString + " bytecode does not exist")
+      }
+
     })
 
     tempList.toVector //Return the queue as a vector
   }
 
-
-  /**
-    Parses a string into instructions and parameters and return only the instruction
-    @param line the string represeting an entry on the instruction list
-    @return returns the instruction name
-  */
   private def getInstruction(line:String): String = {
     val allParams = line.split(" ")
     allParams(0)
   }
 
-  /**
-    * Returns an vector with all the parameters from an instruction line
-    * @param line the string representing an entry on the instruction list
-    * @return return all parameters as a vector
-    */
   private def getParameters(line:String): Vector[Int] = {
     var allParams = line.split(" ")
     if(allParams.length > 1)
-      {
-        allParams = allParams.filterNot(_==allParams(0))
-        val result = new Queue[Int]()
-        allParams.foreach(p=>{
-          result+=p.toInt
-        })
-        return result.toVector
-      }
+    {
+      allParams = allParams.filterNot(_==allParams(0))
+      val result = new Queue[Int]()
+      allParams.foreach(p=>{
+        result+=p.toInt
+      })
+      return result.toVector
+    }
     return Vector.empty[Int]
   }
 
