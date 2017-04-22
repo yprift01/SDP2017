@@ -4,7 +4,13 @@ import scala.collection.mutable.Queue
 import scala.io.BufferedSource
 
 /**
-  * Created by yprift01 on 16/04/17.
+  * Created by yprift01 on 13/04/17.
+  *
+  * [[VendorProgramParser]] is a concrete implementation of [[ProgramParser]].
+  *
+  * The object is used to construct a VirtualMachine that can parse code provided
+  * by a vendor.
+  *
   */
 class VendorProgramParser extends ProgramParser {
 
@@ -78,7 +84,7 @@ class VendorProgramParser extends ProgramParser {
   }
 
   /**
-    * Returns an vector with all the parameters from an instruction line
+    * Returns a vector with all the parameters from an instruction line
     * @param line the string representing an entry on the instruction list
     * @return return all parameters as a vector
     */

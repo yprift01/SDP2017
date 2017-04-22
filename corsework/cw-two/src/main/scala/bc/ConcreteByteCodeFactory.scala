@@ -1,5 +1,10 @@
 package bc
 
+/**
+  * [[ConcreteByteCodeFactory]] is a concrete implementation of the [[ByteCodeFactory]]
+  * interface for creating [[ByteCode]] objects.
+  *
+  */
 
 class ConcreteByteCodeFactory extends ByteCodeFactory with ByteCodeValues {
 
@@ -13,7 +18,7 @@ class ConcreteByteCodeFactory extends ByteCodeFactory with ByteCodeValues {
     * the bytecode requires arguments then an optional integer
     * argument is provided.
     *
-    * This method should throw an [[InvalidBytecodeException]] if the
+    * This method throws a [[InvalidBytecodeException]] if the
     * given bytecode value is unknown.
     *
     * @param byte the byte code of a bytecode
@@ -39,6 +44,8 @@ class ConcreteByteCodeFactory extends ByteCodeFactory with ByteCodeValues {
       }
     }
     catch {
+      // entering a value not in the cases throws a NoSuchElementException
+      // caught here to return an InvalidBytecodeException
       case ex: NoSuchElementException => throw new InvalidBytecodeException(byte.toString + " is not valid")
     }
   }
