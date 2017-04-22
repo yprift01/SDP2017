@@ -31,7 +31,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/scala/functions/functions.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="378">
-              <caret line="133" column="16" lean-forward="true" selection-start-line="133" selection-start-column="16" selection-end-line="133" selection-end-column="19" />
+              <caret line="133" column="16" lean-forward="false" selection-start-line="133" selection-start-column="16" selection-end-line="133" selection-end-column="19" />
               <folding>
                 <marker date="1492873418158" expanded="true" signature="32:7426" ph="{...}" />
                 <marker date="1492873418158" expanded="true" signature="2495:2606" ph="..." />
@@ -769,7 +769,7 @@
       <workItem from="1485985665252" duration="244000" />
       <workItem from="1490905238332" duration="992000" />
       <workItem from="1491732484770" duration="3713000" />
-      <workItem from="1492864722483" duration="6237000" />
+      <workItem from="1492864722483" duration="6618000" />
     </task>
     <servers />
   </component>
@@ -779,7 +779,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13520000" />
+    <option name="totallyTimeSpent" value="13901000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="6" />
@@ -1067,7 +1067,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/scala/functions/functions.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
-          <caret line="133" column="16" lean-forward="true" selection-start-line="133" selection-start-column="16" selection-end-line="133" selection-end-column="19" />
+          <caret line="133" column="16" lean-forward="false" selection-start-line="133" selection-start-column="16" selection-end-line="133" selection-end-column="19" />
           <folding>
             <marker date="1492873418158" expanded="true" signature="32:7426" ph="{...}" />
             <marker date="1492873418158" expanded="true" signature="2495:2606" ph="..." />

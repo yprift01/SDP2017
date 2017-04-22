@@ -1,7 +1,8 @@
 package factory
 
-import org.scalatest.FunSuite
 /**
-  * Created by yprift01 on 02/04/17.
+  * Created by yprift01 on 22/04/17.
   */
-trait Product {}
+trait Product { }
+
+class ConcreteProduct extends Product { }

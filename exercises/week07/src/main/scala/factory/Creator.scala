@@ -1,11 +1,17 @@
 package factory
 
 /**
-  * Created by yprift01 on 02/04/17.
+  * Created by yprift01 on 22/04/17.
   */
 abstract class Creator {
-  def factory:Product = {
-    new ConcreteProduct()
-  }
 
+  def factory: Product = {
+      new ConcreteProduct()
+  }
+}
+
+class ConcreteCreator extends Creator {
+  override def facotry:Product = {
+    new ConcreteProduct
+  }
 }
