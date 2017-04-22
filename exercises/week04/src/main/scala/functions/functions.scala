@@ -75,9 +75,11 @@ object Funcs {
    * list and the cumulative value.
    * @return the final valued.
    */
-  def foldLeft[A, B](ls: List[A], z: B)(f: (B, A) => B): B = ls match {
-    case hd :: tl => foldLeft(tl, f(z,hd))(f)
-    case Nil => z
+  def foldLeft[A, B](ls: List[A], z: B)(f: (B, A) => B): B = {
+    ls match {
+        case Nil => z
+        case first :: remaining => foldLeft(remaining, f(z,first)) (f)
+      }
   }
 
   /**
@@ -93,29 +95,28 @@ object Funcs {
     * List(4,5,6))) produces List(1,2,3,4,5,6).
     */
   def sum(ls: List[Double]): Double = ls match {
-    case Nil => 0
-    case hd :: tl => hd + sum(tl)
+    case Nil => throw new IllegalArgumentException("List was empty.")
+    case hd :: tl => foldLeft(tl, hd)((x, y) => x+y)
   }
 
   def product(ls: List[Double]): Double = ls match {
-    case Nil => 1
-    case hd :: tl => hd * product(tl)
+    case Nil => throw new IllegalArgumentException("List was empty.")
+    case hd :: tl => foldLeft(tl, hd)((x,y) => x*y)
   }
 
   def length[A](ls: List[A]): Int = ls match {
-    case Nil => 0
-    case hd :: tl => 1 + length(tl)
-  }
+      case Nil => 0
+      case hd :: tl => foldLeft(tl, 1)((l,_) => l + 1)
+    }
+
 
   def reverse[A](ls: List[A]): List[A] = ls match {
     case Nil => Nil
-    case hd :: tl => reverse(tl) ::: List(hd)
+    case hd :: tl => foldLeft(tl, List[A](hd))((lst, elem) => elem::lst )
   }
 
-  def flatten[A](ls: List[A]): List[A] = ls match {
-    case Nil => Nil
-    case (head: List[A]) :: tail => flatten(head) ::: flatten(tail)
-    case head :: tail => head :: flatten(tail)
+  def flatten[A](ls: List[List[A]]): List[A] = {
+    foldLeft(ls, List[A]())((list1,list2) => list1:::list2)
   }
 
   // MAP AND FILTER
