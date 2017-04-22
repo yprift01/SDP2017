@@ -21,7 +21,7 @@ object VirtualMachineFactory {
   def byteCodeParser: ByteCodeParser = new ConcreteByteCodeParser(byteCodeFactory)
 
   // TODO
-  def virtualMachineParser: VirtualMachineParser = new ConcreteVirtualMachineParser(byteCodeFactory)
+  def virtualMachineParser: VirtualMachineParser = new ConcreteVirtualMachineParser(byteCodeFactory, vendorParser)
 
   // TODO
   def virtualMachine: VirtualMachine = new ConcreteVirtualMachine

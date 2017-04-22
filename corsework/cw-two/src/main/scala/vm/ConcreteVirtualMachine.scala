@@ -9,7 +9,7 @@ import scala.collection.mutable
   */
 class ConcreteVirtualMachine extends VirtualMachine {
 
-  var stack:mutable.Stack[Int] = new mutable.Stack[Int]()
+  val stack:mutable.Stack[Int] = new mutable.Stack[Int]()
 
   override def execute(bc: Vector[ByteCode]):VirtualMachine = {
     var temp:VirtualMachine = new ConcreteVirtualMachine
@@ -34,9 +34,13 @@ class ConcreteVirtualMachine extends VirtualMachine {
   }
 
   override def pop():(Int, VirtualMachine) = {
-    val temp:Int = stack.pop()
-    val vmIns:VirtualMachine = this
-    (temp, vmIns )
+    try{
+      val temp:Int = stack.pop()
+      val vmIns:VirtualMachine = this
+      (temp, vmIns )
+    } catch {
+      case _: Throwable => throw new MachineUnderflowException("Pop on an empty stack")
+    }
   }
 
   override def push(value: Int) = {
