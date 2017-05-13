@@ -11,7 +11,7 @@ abstract class Creator {
 }
 
 class ConcreteCreator extends Creator {
-  override def facotry:Product = {
+  override def factory:Product = {
     new ConcreteProduct
   }
 }
